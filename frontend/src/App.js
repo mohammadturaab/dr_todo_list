@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState, useEffect} from "react"
+import axios from "axios"
 
 function App() {
+  const [todoList, setTodoList] = useState([])
+
+  axios
+    .get("/api/todos/")
+    .then((res) => {
+      console.log(res.data)
+      setTodoList(res.data)
+    })
+    .catch((err) => console.log(err))
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+       <p> {todoList.map((e) => {
+          return(
+            <div  style={{color: e.completed ? 'green' : 'red', borderRadius: '1px'}}>
+              <p> {e.title}</p>
+              <p> {e.description}</p>
+            </div>
+          )
+        })} </p>
     </div>
   );
 }
